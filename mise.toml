@@ -1,0 +1,3 @@
+[tools]
+"ubi:adwinying/php" = "8.4"
+"ubi:composer/composer" = "latest"
