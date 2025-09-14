@@ -18,7 +18,9 @@ jobs:
       - name: 'Perform Spellcheck'
         uses: streetsidesoftware/cspell-action@v7
         with:
+          config: './cspell.json'
           incremental_files_only: true
+          check_dot_files: false
 
   php-build-test:
     name: 'PHP Build and Test'
