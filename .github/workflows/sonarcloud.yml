@@ -18,7 +18,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v5
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for better analysis
+          fetch-depth: 0
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -37,7 +37,7 @@ jobs:
             ${{ runner.os }}-php-
 
       - name: Install PHP dependencies
-        run: composer install --prefer-dist --no-progress --working-dir=src
+        run: composer install --prefer-dist --no-progress --working-dir=.
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -61,14 +61,14 @@ jobs:
       - name: Run PHPUnit tests with coverage
         run: |
           cd src
-          ./vendor/bin/phpunit --configuration ../phpunit.xml --coverage-clover ../coverage.xml --log-junit ../phpunit.xml
+          ./vendor/bin/phpunit --configuration ../phpunit.xml.dist --coverage-clover ../coverage.xml --log-junit ../phpunit.xml
         env:
           APP_ENV: test
 
       - name: Run PHPStan analysis
         run: |
           cd src
-          ./vendor/bin/phpstan analyse --error-format=checkstyle --no-progress > ../phpstan-report.xml || true
+          ./vendor/bin/phpstan analyse . --error-format=checkstyle --no-progress --memory-limit=1024M > ../phpstan-report.xml || true
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
@@ -101,7 +101,7 @@ jobs:
       checks: write
     steps:
       - name: Wait for SonarCloud Quality Gate
-        uses: sonarqube-quality-gate-action@master
+        uses: SonarSource/sonarqube-quality-gate-action@v1
         timeout-minutes: 5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -129,7 +129,7 @@ jobs:
 
             📊 View detailed analysis on [SonarCloud](${sonarUrl})
 
-            The quality gate check ${{ job.status === 'success' ? '✅ **PASSED**' : '❌ **FAILED**' }}
+            The quality gate check ${{ needs.sonarcloud.result == 'success' && '✅ **PASSED**' || '❌ **FAILED**' }}
 
             Please review any issues found before merging.`;
 
