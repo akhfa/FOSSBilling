@@ -65,7 +65,7 @@ FOSSBilling is a free open-source billing and client management system built wit
 - **CSS Framework**: Bootstrap 5.3
 - **JavaScript Libraries**: Tom Select, Autosize
 - **Testing**: PHPUnit 11.4+, PHPStan 2.0+, Cypress
-- **Code Quality**: PHP-CS-Fixer, Rector
+- **Code Quality**: PHP-CS-Fixer, Rector, SonarCloud
 
 ### Configuration
 - Copy `src/config-sample.php` to `src/config.php` for local development
@@ -103,6 +103,16 @@ The application uses npm workspaces for theme building:
 - E2E tests with Cypress
 - Static analysis with PHPStan (baseline: `phpstan-baseline.neon`)
 - Code style enforcement with PHP-CS-Fixer
+- Code quality analysis with SonarCloud integration
+
+### SonarCloud Integration
+- **Project Key**: `FOSSBilling_FOSSBilling`
+- **Organization**: `fossbilling`
+- **Quality Gate**: Enforces coverage, maintainability, reliability, and security standards
+- **PR Integration**: Automatic quality gate checks on pull requests
+- **Coverage Reports**: Generated from PHPUnit with Xdebug
+- **Analysis Workflow**: `.github/workflows/sonarcloud.yml`
+- **Configuration**: `sonar-project.properties`
 
 ## Important Notes
 
